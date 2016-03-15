@@ -27,14 +27,14 @@ test=subset(stevens,spl==FALSE)
 stevensTree=rpart(Reverse~ Circuit+Issue+Petitioner+Respondent+LowerCourt+Unconst,data=train,method="class",minbucket=25)
 
 #  minbucket puts a lower bound on the number of data points in each bucket
-#  method="class" is used to make it a classification problem ( with threshold 0.5)
+#  method="class" is always used while building a tree
 # instead of a regression problem. If we omit this we get the probabilities.
 windows()
 prp(stevensTree)   # to plot the tree
 
 #lets make prediction for the test set
 predictCART=predict(stevensTree,newdata=test,type="class")
-
+#  type="class" is Ommited to get the probabilities
 # lets check the confusion matrix
 table(test$Reverse,predictCART)
 #0.659 accuracy
