@@ -27,8 +27,8 @@ test=subset(stevens,spl==FALSE)
 stevensTree=rpart(Reverse~ Circuit+Issue+Petitioner+Respondent+LowerCourt+Unconst,data=train,method="class",minbucket=25)
 
 #  minbucket puts a lower bound on the number of data points in each bucket
-#  method="class" is always used while building a tree
-# instead of a regression problem. If we omit this we get the probabilities.
+#  method="class" is always used while building a classification tree, But if its a regression tree it is omitted
+
 windows()
 prp(stevensTree)   # to plot the tree
 
@@ -42,7 +42,7 @@ table(test$Reverse,predictCART)
 # let us check the ROC curve to see if a threshold of 0.5 is good
 
 predictCART=predict(stevensTree,newdata=test)  # prediction to find the probabilities
-
+# to prepare a ROC curve we have to omit the type="class" as we need the threshold from ROC so we cant assume beforehand
 ROCR=prediction(predictCART[,2],test$Reverse)
 ROCCurve=performance(ROCR,"tpr","fpr")
 plot(ROCCurve,colorize=T)
